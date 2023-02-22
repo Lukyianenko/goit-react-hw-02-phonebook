@@ -1,10 +1,13 @@
 import { Component } from "react";
 import { nanoid } from 'nanoid';
 import AddContscts from './BookContacts/AddContact';
+import { ListContacts } from './BookContacts/ListContacts';
+import { Filter } from './BookContacts/FilterContacts';
 
 class App extends Component {
   state = {
     contacts: [],
+    filtr: '',
   }
 
   onSubmitAddNewContact = (contact) => {
@@ -13,9 +16,22 @@ class App extends Component {
       contacts: [...this.state.contacts, {id, ...contact}]
     })
   }
+
+  OnChangeFiltr = (e) => {
+        this.setState({
+          filtr: e.currentTarget.value,
+        }) 
+  }
+
+  
   
   
   render() {
+
+    const normalizeFiltr = this.state.filtr.toLowerCase();
+
+    const visibleContacts = this.state.contacts.filter(contact => contact.name.toLowerCase().includes(normalizeFiltr));
+
     return (
       <div
         style={{
@@ -29,13 +45,9 @@ class App extends Component {
       >
 
       <AddContscts onSubmit={this.onSubmitAddNewContact} />
-
-      <div>
-      <h2>Contacts</h2>
-      <ul>
-      {this.state.contacts.map(item => (<li key={item.id}>{item.name}: {item.number}</li>))}
-      </ul>
-      </div>
+      <Filter value={this.state.filtr} onChange={this.OnChangeFiltr}/>
+      <ListContacts contacts={visibleContacts}/>
+      
 
       </div>
     );
