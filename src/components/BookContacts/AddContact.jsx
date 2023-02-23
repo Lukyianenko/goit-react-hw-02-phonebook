@@ -1,4 +1,5 @@
 import { Component } from "react"; 
+import PropTypes from 'prop-types';
 
 class AddContscts extends Component {
     state = {
@@ -60,3 +61,14 @@ render() {
 }
 
 export default AddContscts;
+
+AddContscts.propTypes = {
+  state: PropTypes.arrayOf(PropTypes.exact({
+    name: PropTypes.string.isRequired,
+    number: PropTypes.string.isRequired,
+  })),
+  onInputChange: PropTypes.func,
+  onSubmitContact: PropTypes.func,
+  reset: PropTypes.func,
+  render: PropTypes.func,
+}

@@ -1,4 +1,5 @@
 import { Component } from "react";
+import PropTypes from 'prop-types';
 import { nanoid } from 'nanoid';
 import AddContscts from './BookContacts/AddContact';
 import { ListContacts } from './BookContacts/ListContacts';
@@ -11,10 +12,16 @@ class App extends Component {
   }
 
   onSubmitAddNewContact = (contact) => {
-    const id = nanoid();
+    const includesName = this.state.contacts.map(item => {return (item.name.toLowerCase)});
+    if(includesName.includes(contact.name.toLowerCase)) {
+      alert(`${contact.name} is already in contacts`)
+          }  else {
+            const id = nanoid();
     this.setState({
       contacts: [...this.state.contacts, {id, ...contact}]
     })
+          }
+    
   }
 
   OnChangeFiltr = (e) => {
@@ -23,6 +30,11 @@ class App extends Component {
         }) 
   }
 
+  onDeleteContact = (contactId) => {
+    this.setState(prevState => ({
+      contacts: prevState.contacts.filter(contact => contact.id !== contactId),
+    }));
+  }
   
   
   
@@ -43,10 +55,10 @@ class App extends Component {
           color: '#010101'
         }}
       >
-
+        <h1>Phonebook</h1>
       <AddContscts onSubmit={this.onSubmitAddNewContact} />
       <Filter value={this.state.filtr} onChange={this.OnChangeFiltr}/>
-      <ListContacts contacts={visibleContacts}/>
+      <ListContacts contacts={visibleContacts} onDelete={this.onDeleteContact}/>
       
 
       </div>
@@ -56,3 +68,14 @@ class App extends Component {
 };
 
 export default App;
+
+App.propTypes = {
+  state: PropTypes.arrayOf(PropTypes.exact({
+    contacts: PropTypes.arrayOf(PropTypes.exact({
+      id: PropTypes.string,
+      name: PropTypes.string,
+      number: PropTypes.string,
+    })),
+    filtr: PropTypes.string,
+  })),
+}
