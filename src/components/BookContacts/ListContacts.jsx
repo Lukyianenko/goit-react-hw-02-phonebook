@@ -1,14 +1,15 @@
 import PropTypes from 'prop-types';
+import { TitleContact, List, ContList, ButtonList, ItemList } from './BookContacts.styled';
 
 export const ListContacts = ({contacts, onDelete}) => (
-    <div>
-        <h2>Contacts</h2>
-        <ul>
-        {contacts.map(({ id, name, number }) => (<li key={id}>{name}: {number} 
-        <button type="button" onClick={() => onDelete(id)}>Delete</button>
-        </li>))}
-        </ul>
-    </div>
+    <ContList>
+        <TitleContact>Contacts</TitleContact>
+        <List>
+        {contacts.map(({ id, name, number }) => (<ItemList key={id}>{name}: {number} 
+        <ButtonList type="button" onClick={() => onDelete(id)}>Delete</ButtonList>
+        </ItemList>))}
+        </List>
+    </ContList>
 )
 
 ListContacts.propTyoes = {
